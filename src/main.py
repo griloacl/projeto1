@@ -21,6 +21,7 @@ def logar():
                 messagebox.showinfo("login", "Login correto")
                 print("login correto")
                 janela_login.destroy()
+                area_administrativa()
             else:
                 #Messagebox de erro
                 messagebox.showerror("login", "Login incorreto")
@@ -62,14 +63,15 @@ def logar():
     entry_login_senha = tk.Entry(janela_login, font=("Arial", 10), show="*")
     entry_login_senha.pack(pady=5)
     entry_login_senha.place(relx=0.5, rely=0.6, anchor="center")
+    #criando um frame para os botões
+    frame_botoes = tk.Frame(janela_login, bg="black")
+    frame_botoes.place(relx=0.5, rely=0.75, anchor="center")
     #Criando um botão para logar
-    botao_login = tk.Button(janela_login, text="Logar", font=("Arial", 10), bg="black", fg="white", command=verificar_login)
-    botao_login.pack(pady=5)
-    botao_login.place(relx=0.5, rely=0.7, anchor="center")
+    botao_login = tk.Button(frame_botoes, text="Logar", font=("Arial", 10), bg="black", fg="white", command=verificar_login, width=10)
+    botao_login.pack(side=tk.LEFT, padx=10)
     #Criando um botão para cancelar
-    botao_cancelar = tk.Button(janela_login, text="Cancelar", font=("Arial", 10), bg="black", fg="white", command=janela_login.destroy)
-    botao_cancelar.pack(pady=5)
-    botao_cancelar.place(relx=0.5, rely=0.8, anchor="center")
+    botao_cancelar = tk.Button(frame_botoes, text="Cancelar", font=("Arial", 10), bg="black", fg="white", command=janela_login.destroy, width=10)
+    botao_cancelar.pack(side=tk.LEFT, padx=10)
 
     
 
@@ -135,8 +137,18 @@ menu.add_cascade(label="Hotel", menu=hotel_submenu)
 hotel_submenu.add_command(label="Cadastro de Clientes")
 hotel_submenu.add_command(label="Logar", command=logar)
 
-
-
+#criando uma nova janela para área administrativa
+def area_administrativa():
+    janela_admin = tk.Toplevel(janela)
+    janela_admin.title("Área Administrativa")
+    janela_admin.geometry("400x400")
+    janela_admin.configure(bg="black")
+    janela_admin.resizable(False, False)
+    #Titulo grande centralizado no topo da tela
+    titulo_admin = tk.Label(janela_admin, text="Área Administrativa", font=("Arial", 20), bg="black", fg="white")
+    titulo_admin.pack(pady=20)
+    titulo_admin.place(relx=0.5, rely=0.1, anchor="center")
+    
 #Mantendo a janela aberta
 janela.mainloop()
 
