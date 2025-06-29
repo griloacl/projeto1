@@ -3,6 +3,88 @@ import tkinter.messagebox as messagebox
 import sqlite3
 
 
+
+#criando uma função para cadastrar clientes
+def cadastrar_cliente():
+    #Criando uma nova janela
+    janela_cadastrar_cliente = tk.Toplevel(janela)
+    janela_cadastrar_cliente.title("Cadastro de Clientes")
+    janela_cadastrar_cliente.geometry("400x500")
+    janela_cadastrar_cliente.configure(bg="black")
+    janela_cadastrar_cliente.resizable(False, False)
+    #Titulo grande centralizado no topo da tela
+    titulo_cadastrar_cliente = tk.Label(janela_cadastrar_cliente, text="Cadastro de Clientes", font=("Arial", 20), bg="black", fg="white")
+    titulo_cadastrar_cliente.pack(pady=20)
+    titulo_cadastrar_cliente.place(relx=0.5, rely=0.05, anchor="center")
+    #Criando um lable para o nome
+    label_nome = tk.Label(janela_cadastrar_cliente, text="Nome", font=("Arial", 10), bg="black", fg="white")
+    label_nome.pack(pady=5)
+    label_nome.place(relx=0.5, rely=0.15, anchor="center")
+    #Criando um entry para o nome
+    entry_nome = tk.Entry(janela_cadastrar_cliente, font=("Arial", 10), width=30)
+    entry_nome.pack(pady=5)
+    entry_nome.place(relx=0.5, rely=0.25, anchor="center")
+    #Criando um lable para o cpf
+    label_cpf = tk.Label(janela_cadastrar_cliente, text="CPF", font=("Arial", 10), bg="black", fg="white")
+    label_cpf.pack(pady=5)
+    label_cpf.place(relx=0.5, rely=0.35, anchor="center")
+    #Criando um entry para o cpf
+    entry_cpf = tk.Entry(janela_cadastrar_cliente, font=("Arial", 10))
+    entry_cpf.pack(pady=5)
+    entry_cpf.place(relx=0.5, rely=0.45, anchor="center")
+    #Criando um lable para o telefone
+    label_telefone = tk.Label(janela_cadastrar_cliente, text="Telefone", font=("Arial", 10), bg="black", fg="white")
+    label_telefone.pack(pady=5)
+    label_telefone.place(relx=0.5, rely=0.55, anchor="center")
+    #Criando um entry para o telefone
+    entry_telefone = tk.Entry(janela_cadastrar_cliente, font=("Arial", 10))
+    entry_telefone.pack(pady=5)
+    entry_telefone.place(relx=0.5, rely=0.65, anchor="center")
+    #Criando um lable para o endereço
+    label_endereco = tk.Label(janela_cadastrar_cliente, text="Endereço", font=("Arial", 10), bg="black", fg="white")
+    label_endereco.pack(pady=5)
+    label_endereco.place(relx=0.5, rely=0.75, anchor="center")
+    #Criando um entry para o endereço
+    entry_endereco = tk.Entry(janela_cadastrar_cliente, font=("Arial", 10), width=30)
+    entry_endereco.pack(pady=5)
+    entry_endereco.place(relx=0.5, rely=0.85, anchor="center")
+    #Criando um frame para os botões
+    frame_botoes = tk.Frame(janela_cadastrar_cliente, bg="black")
+    frame_botoes.place(relx=0.5, rely=0.95, anchor="center")
+    
+    def cadastrar():
+        #Pegando os dados dos entries
+        nome = entry_nome.get()
+        cpf = entry_cpf.get()
+        telefone = entry_telefone.get()
+        endereco = entry_endereco.get()
+        #Verificando se os campos estão preenchidos
+        if not nome or not cpf or not telefone or not endereco:
+            messagebox.showerror("Erro", "Preencha todos os campos")
+            return
+        #Conectando ao banco de dados
+        conn = sqlite3.connect('c:/python/projeto1/bd/hotel.db')
+        c = conn.cursor()
+        #Inserindo os dados na tabela de clientes
+        c.execute('''INSERT INTO clientes (nome, cpf, telefone, endereco) VALUES (?, ?, ?, ?)''', (nome, cpf, telefone, endereco))
+        #Salvando as alterações
+        conn.commit()
+        #Fechando a conexão
+        conn.close()
+        #Messagebox de sucesso
+        messagebox.showinfo("Sucesso", "Cliente cadastrado com sucesso")
+        print("Cliente cadastrado com sucesso")
+        #Fechando a janela de cadastro
+        janela_cadastrar_cliente.destroy()
+    #Criando um botão para cadastrar
+    botao_cadastrar = tk.Button(frame_botoes, text="Cadastrar", font=("Arial", 10), bg="black", fg="white", width=12, command=cadastrar)
+    botao_cadastrar.pack(side=tk.LEFT, padx=10)
+    #criando um botão para cancelar
+    botao_cancelar = tk.Button(frame_botoes, text="Cancelar", font=("Arial", 10), bg="black", fg="white", command=janela_cadastrar_cliente.destroy, width=12)
+    botao_cancelar.pack(side=tk.LEFT, padx=10)    
+        
+
+
 #Criando um botão para logar na area administrativa
 def logar():
     
@@ -134,7 +216,7 @@ submenu.add_command(label="Sair", command=janela.quit)
 submenu.add_command(label="Ajuda")
 submenu.add_command(label="Configurações")
 menu.add_cascade(label="Hotel", menu=hotel_submenu)
-hotel_submenu.add_command(label="Cadastro de Clientes")
+hotel_submenu.add_command(label="Cadastro de Clientes", command=cadastrar_cliente)
 hotel_submenu.add_command(label="Logar", command=logar)
 
 #criando uma nova janela para área administrativa
